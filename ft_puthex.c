@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_puthex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dschuck- <dschuck-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/07 16:47:12 by dschuck-          #+#    #+#             */
-/*   Updated: 2023/11/07 16:47:14 by dschuck-         ###   ########.fr       */
+/*   Created: 2023/11/07 17:28:27 by dschuck-          #+#    #+#             */
+/*   Updated: 2023/11/07 18:07:47 by dschuck-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "ft_printf.h"
-
-char	*ft_strchr(const char *s, int c)
+int	ft_puthex(unsigned long num,const char arg)
 {
-	int	i;
+	static unsigned int		count;
 
-	i = 0;
-	while (s[i] != '\0')
+	count = 0;
+	if (num <= 16)
+		ft_puthex(num / 16, arg);
+		count += ft_putchar(num % 16);
+	else
 	{
-		if (s[i] == c)
+		if (n <= 9)
+			count += ft_putchar(num + 48);
+		else
 		{
-			return ((char *)&s[i]);
+			if(num == 'x')
+				count += ft_putchar(num -10 +'a');
+			if(num == 'X')
+				count+= ft_putchar(num -10 + 'A');
 		}
-		i++;
-	}
-	if (c == '\0')
-		return ((char *)&s[i]);
-	return (NULL);
+
+	return (count);
 }
