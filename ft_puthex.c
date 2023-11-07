@@ -10,25 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
-int	ft_puthex(unsigned long num,const char arg)
+static int len_hex(unsigned long nbr)
+{
+	int len;
+	len = 0;
+	if(!nbr)
+		len++;
+	while(nbr)
+	{
+		nbr/=16;
+		len++;
+	}
+	return(len);
+}
+int	ft_puthex(unsigned long num)
 {
 	static unsigned int		count;
 
 	count = 0;
-	if (num <= 16)
-		ft_puthex(num / 16, arg);
-		count += ft_putchar(num % 16);
+	count=len_hex(num);
+	
+	if (num >= 16)
+	{
+		ft_puthex(num / 16);
+		ft_puthex(num % 16);
+	}
 	else
 	{
-		if (n <= 9)
-			count += ft_putchar(num + 48);
-		else
+		if (num <= 9)
+			ft_puthex(num + 48);
+		else 
 		{
 			if(num == 'x')
-				count += ft_putchar(num -10 +'a');
+				ft_puthex(num -10 +'a');
 			if(num == 'X')
-				count+= ft_putchar(num -10 + 'A');
+				ft_puthex(num -10 + 'A');
 		}
+	}
 
 	return (count);
 }
