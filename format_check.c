@@ -22,10 +22,10 @@ int	format_check(const char *arg, int i, va_list ap)
 		return (ft_putnbr(va_arg(ap, int)));
 	else if (arg[i + 1] == 'u')
 		return (ft_putsunbr(va_arg(ap, unsigned int)));
-	//else if (arg[i + 1] == 'p')
-		//return (ft_putstr("0x") + ft_puthex(va_arg(ap, unsigned long long),arg[i + 1]));
+	else if (arg[i + 1] == 'p')
+		return (ft_puthex(va_arg(ap, unsigned long), 'p') + 2);
 	else if (arg[i + 1] == 'x' || arg[i + 1] == 'X')
-		return (ft_puthex(va_arg(ap, unsigned int)));		
+		return (ft_puthex(va_arg(ap, unsigned int), arg[i + 1]));
 	else if (arg[i + 1] == '%')
 		return (ft_putchar('%'));
 	return (0);

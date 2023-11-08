@@ -6,47 +6,60 @@
 /*   By: dschuck- <dschuck-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:28:27 by dschuck-          #+#    #+#             */
-/*   Updated: 2023/11/07 18:07:47 by dschuck-         ###   ########.fr       */
+/*   Updated: 2023/11/08 09:25:21 by dschuck-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
-static int len_hex(unsigned long nbr)
-{
-	int len;
-	len = 0;
-	if(!nbr)
-		len++;
-	while(nbr)
-	{
-		nbr/=16;
-		len++;
-	}
-	return(len);
-}
-int	ft_puthex(unsigned long num)
-{
-	static unsigned int		count;
 
-	count = 0;
-	count=len_hex(num);
-	
-	if (num >= 16)
+static void	to_char(unsigned long n, int arg, int *count)
+{
+	const char	*alpha_upp = "0123456789ABCDEF";
+	const char	*alpha_low = "0123456789abcdef";
+	char		hex;
+
+	if (arg == 'X')
+		hex = alpha_upp[n % 16];
+	else if (arg == 'x')
+		hex = alpha_low[n % 16];
+	else if (arg == 'p')
+		hex = alpha_low[n % 16];
+	write(1, &hex, 1);
+	(*count)++;
+}
+
+static int	if_pointer(unsigned long d)
+{
+	if (d == 0)
 	{
-		ft_puthex(num / 16);
-		ft_puthex(num % 16);
+		ft_putstr("(nil)");
+		return (3);
 	}
 	else
-	{
-		if (num <= 9)
-			ft_puthex(num + 48);
-		else 
-		{
-			if(num == 'x')
-				ft_puthex(num -10 +'a');
-			if(num == 'X')
-				ft_puthex(num -10 + 'A');
-		}
-	}
+		return (0);
+}
 
+int	ft_puthex(unsigned long d, int arg)
+{
+	int	count;
+	int	digits[16];
+	int	i;
+
+	count = 0;
+	if (d == 0)
+	{
+		if (arg == 'p')
+			return (if_pointer(d));
+		to_char(d, arg, &count);
+	}
+	if (arg == 'p' && d != 0)
+		ft_putstr("0x");
+	i = 0;
+	while (d > 0)
+	{
+		digits[i++] = d % 16;
+		d /= 16;
+	}
+	while (--i >= 0)
+		to_char(digits[i], arg, &count);
 	return (count);
 }
